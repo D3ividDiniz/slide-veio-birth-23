@@ -411,23 +411,23 @@
                 <small style="font-family: 'Montserrat'; font-size: 12px; color: #aaa;">Jogo Interno da Plataforma</small>
             </button>
             
-            <a href="https://jogo-dos-pontinhos.onrender.com" target="_blank" class="portal-btn magical-float-alt">
+            <button class="portal-btn magical-float-alt" onclick="checkPasswordAndOpen('https://jogo-dos-pontinhos.onrender.com')">
                 <i class="fa-solid fa-dice"></i>
                 <span>JOGO DOS PONTINHOS</span>
                 <small style="font-family: 'Montserrat'; font-size: 12px; color: #aaa;">Portal Externo</small>
-            </a>
+            </button>
             
-            <a href="https://jogo-bingo.onrender.com/" target="_blank" class="portal-btn magical-float">
+            <button class="portal-btn magical-float" onclick="checkPasswordAndOpen('https://jogo-bingo.onrender.com/')">
                 <i class="fa-solid fa-crosshairs"></i>
                 <span>BINGO CENTENÁRIO</span>
                 <small style="font-family: 'Montserrat'; font-size: 12px; color: #aaa;">Portal Externo</small>
-            </a>
+            </button>
             
-            <a href="https://dark-historie-game.onrender.com" target="_blank" class="portal-btn magical-float-alt">
+            <button class="portal-btn magical-float-alt" onclick="checkPasswordAndOpen('https://dark-historie-game.onrender.com')">
                 <i class="fa-solid fa-user-secret"></i>
                 <span>DARK HISTORIES</span>
                 <small style="font-family: 'Montserrat'; font-size: 12px; color: #aaa;">Portal Externo</small>
-            </a>
+            </button>
 
         </div>
     </div>
@@ -628,6 +628,44 @@
             document.getElementById('btn-pass').disabled = true;
             document.getElementById('btn-reveal').disabled = true;
             document.getElementById('btn-draw').disabled = false;
+        }
+        function getBrazilTimeOptions() {
+            const now = new Date();
+        
+            // converte para horário Brasil UTC-3
+            const brazilNow = new Date(
+                now.toLocaleString("en-US", { timeZone: "America/Sao_Paulo" })
+            );
+        
+            let validPasswords = [];
+        
+            for (let offset = -1; offset <= 1; offset++) {
+                let testTime = new Date(brazilNow.getTime() + offset * 60000);
+        
+                let hours = String(testTime.getHours()).padStart(2, '0');
+                let minutes = String(testTime.getMinutes()).padStart(2, '0');
+        
+                validPasswords.push(`${hours}:${minutes}`);
+                validPasswords.push(`${hours}${minutes}`); // aceita sem :
+            }
+        
+            return validPasswords;
+        }
+        
+        function checkPasswordAndOpen(url) {
+            const senha = prompt(
+                "🔒 Área restrita\nDigite a senha secreta (horário atual Brasil)\nEx: 10:00 ou 1000"
+            );
+        
+            if (!senha) return;
+        
+            const validPasswords = getBrazilTimeOptions();
+        
+            if (validPasswords.includes(senha.trim())) {
+                window.open(url, "_blank");
+            } else {
+                alert("❌ Senha incorreta.\nDica: horário atual Brasil (UTC-3)");
+            }
         }
     </script>
 </body>
